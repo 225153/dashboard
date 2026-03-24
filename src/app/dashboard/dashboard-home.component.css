@@ -1,0 +1,264 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.premium-shadow {
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08) !important;
+  background: #ffffff;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.premium-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 45px -10px rgba(0,0,0,0.12) !important;
+}
+
+.widget-content {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.temp-icon {
+  background: rgba(255, 87, 34, 0.1);
+  color: #ff5722;
+}
+
+.status-icon.ok {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.status-icon.alert {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.widget-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0;
+}
+
+.value-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  color: #1e293b;
+  display: inline-block;
+}
+
+.value .unit {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-left: 8px;
+}
+
+.value.hot { color: #f97316; }
+.value.normal { color: #3b82f6; }
+.value.ok-text { color: #10b981; }
+.value.alert-text { color: #ef4444; }
+
+.widget-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.widget-footer mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* History Card */
+.cyber-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: white;
+  padding: 24px 32px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-content h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.no-pad {
+  padding: 0 !important;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 24px !important;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td.mat-cell {
+  padding: 16px 24px !important;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* Styling badges inside table */
+.time-badge {
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-weight: 600;
+  color: #475569;
+  margin-right: 8px;
+}
+
+.date-txt {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.temp-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.temp-indicator.high {
+  color: #ea580c;
+}
+
+.temp-indicator.high mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.status-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-chip.success {
+  background: #dcfce7;
+  color: #059669;
+}
+
+.status-chip.error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Empty State */
+.no-data {
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+}
+
+.spin-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.loader-line {
+  height: 3px;
+  width: 100px;
+  background: #cbd5e1;
+  margin: 20px auto 0;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-line::after {
+  content: '';
+  position: absolute;
+  left: -50px;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  background: #3b82f6;
+  border-radius: 3px;
+  animation: load 1.5s infinite linear;
+}
+
+@keyframes load {
+  0% { left: -50px; }
+  100% { left: 100%; }
+}

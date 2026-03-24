@@ -1,0 +1,101 @@
+<div class="dashboard-grid" @staggeredCards>
+  <!-- Temperature Widget -->
+  <mat-card class="widget-card premium-shadow" matRipple>
+    <mat-card-content class="widget-content">
+      <div class="widget-header">
+        <div class="icon-wrapper temp-icon">
+          <mat-icon>thermostat</mat-icon>
+        </div>
+        <h3 class="widget-title">Live Temperature</h3>
+      </div>
+      <div class="value-container">
+        <!-- Pulse animation triggers continuously on new data id -->
+        <div class="value" [@pulseValue]="latestReading()?.id" 
+             [ngClass]="{'hot': isNumber(latestTemperature()) && asNumber(latestTemperature()) > 30, 'normal': isNumber(latestTemperature()) && asNumber(latestTemperature()) <= 30 }">
+          {{ latestTemperature() }}<span class="unit" *ngIf="latestTemperature() !== '--'">°C</span>
+        </div>
+      </div>
+      <div class="widget-footer">
+        <mat-icon>trending_up</mat-icon> <span>Realtime sensor feed</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Status Widget -->
+  <mat-card class="widget-card premium-shadow" matRipple>
+    <mat-card-content class="widget-content">
+      <div class="widget-header">
+        <div class="icon-wrapper status-icon" [ngClass]="{'ok': latestStatus() === 'OK', 'alert': latestStatus() !== 'OK'}">
+          <mat-icon>{{ latestStatus() === 'OK' ? 'check_circle' : 'warning' }}</mat-icon>
+        </div>
+        <h3 class="widget-title">System Status</h3>
+      </div>
+      <div class="value-container">
+        <div class="value status-text" [@pulseValue]="latestReading()?.id" 
+             [class.ok-text]="latestStatus() === 'OK'" [class.alert-text]="latestStatus() !== 'OK'">
+          {{ latestStatus() }}
+        </div>
+      </div>
+       <div class="widget-footer">
+        <mat-icon>memory</mat-icon> <span>ESP32 Diagnostics</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- History Table -->
+<mat-card class="history-card premium-shadow">
+  <div class="cyber-header">
+    <div class="header-content">
+      <mat-icon class="pulse-icon">history</mat-icon>
+      <h2>Recent Readings</h2>
+    </div>
+  </div>
+  
+  <mat-card-content class="no-pad">
+    <div class="table-container">
+      <table mat-table [dataSource]="sensorData()" class="history-table" [trackBy]="trackById">
+        
+        <!-- Time Column -->
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="time-badge">{{ element.created_at | date:'HH:mm:ss' }}</span>
+            <span class="date-txt">{{ element.created_at | date:'MMM d' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Temperature Column -->
+        <ng-container matColumnDef="temperature">
+          <th mat-header-cell *matHeaderCellDef> Temperature </th>
+          <td mat-cell *matCellDef="let element"> 
+            <div class="temp-indicator" [class.high]="element.temperature > 30">
+              <mat-icon *ngIf="element.temperature > 30">whatshot</mat-icon>
+              {{ element.temperature }}°C 
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="status-chip" [class.success]="element.status === 'OK'" [class.error]="element.status !== 'OK'">
+               {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Row uses listAnimation dynamically inserted -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" @listAnimation></tr>
+      </table>
+    </div>
+    
+    <div *ngIf="sensorData().length === 0" class="no-data">
+      <mat-icon class="spin-icon">satellite_alt</mat-icon>
+      <p>Listening for ESP32 telemetry...</p>
+      <div class="loader-line"></div>
+    </div>
+  </mat-card-content>
+</mat-card>

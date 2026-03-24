@@ -1,0 +1,69 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Minimal Dark Sidenav -->
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    
+    <div class="sidebar-header">
+      <div class="logo-box">
+        <mat-icon>router</mat-icon>
+      </div>
+      <div class="brand">IoT Control</div>
+    </div>
+
+    <mat-nav-list class="nav-menu">
+      <a mat-list-item href="#" class="active-nav">
+        <mat-icon matListItemIcon>space_dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item href="#">
+        <mat-icon matListItemIcon>insights</mat-icon>
+        <span matListItemTitle>Analytics</span>
+      </a>
+      <a mat-list-item href="#">
+        <mat-icon matListItemIcon>settings</mat-icon>
+        <span matListItemTitle>Settings</span>
+      </a>
+    </mat-nav-list>
+    
+    <div class="sidebar-footer">
+      <p class="version">v2.0 • Pro Edition</p>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content [style.marginLeft]="(isHandset$ | async) ? '0' : '260px'">
+    <!-- Top Toolbar -->
+    <mat-toolbar class="glass-toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+        class="menu-btn">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      
+      <div class="page-title">
+        <h1>Overview</h1>
+        <span class="subtitle">Live Sensor Telemetry</span>
+      </div>
+      
+      <span class="spacer"></span>
+      
+      <div class="status-badge" [class.connected]="isConnected()" [class.disconnected]="!isConnected()">
+        <span class="status-dot"></span>
+        {{ isConnected() ? 'Online' : 'Offline' }}
+      </div>
+
+      <button mat-icon-button class="profile-btn">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+    
+    <div class="dashboard-content">
+      <app-dashboard-home></app-dashboard-home>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
