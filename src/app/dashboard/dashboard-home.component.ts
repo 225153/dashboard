@@ -55,6 +55,16 @@ export class DashboardHomeComponent {
     return latest ? latest.tmp : '--';
   });
 
+  latestBpm = computed(() => {
+    const latest = this.latestReading();
+    return latest ? latest.bpm : '--';
+  });
+
+  latestGaz = computed(() => {
+    const latest = this.latestReading();
+    return latest ? latest.gaz_level : '--';
+  });
+
   latestStatus = computed(() => {
     const latest = this.latestReading();
     return latest ? latest.ai_status : 'Unknown';

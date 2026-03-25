@@ -25,19 +25,61 @@
   <mat-card class="widget-card premium-shadow" matRipple>
     <mat-card-content class="widget-content">
       <div class="widget-header">
-        <div class="icon-wrapper status-icon" [ngClass]="{'ok': latestStatus() === 'OK', 'alert': latestStatus() !== 'OK'}">
-          <mat-icon>{{ latestStatus() === 'OK' ? 'check_circle' : 'warning' }}</mat-icon>
+        <div class="icon-wrapper status-icon" [ngClass]="{'ok': latestStatus() === 'Normal', 'alert': latestStatus() !== 'Normal'}">
+          <mat-icon>{{ latestStatus() === 'Normal' ? 'check_circle' : 'warning' }}</mat-icon>
         </div>
         <h3 class="widget-title">System Status</h3>
       </div>
       <div class="value-container">
         <div class="value status-text" [@pulseValue]="latestReading()?.client_id"
-             [class.ok-text]="latestStatus() === 'OK'" [class.alert-text]="latestStatus() !== 'OK'">
+             [class.ok-text]="latestStatus() === 'Normal'" [class.alert-text]="latestStatus() !== 'Normal'">
           {{ latestStatus() }}
         </div>
       </div>
        <div class="widget-footer">
         <mat-icon>memory</mat-icon> <span>ESP32 Diagnostics</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Pulse Widget -->
+  <mat-card class="widget-card premium-shadow" matRipple>
+    <mat-card-content class="widget-content">
+      <div class="widget-header">
+        <div class="icon-wrapper pulse-icon-widget">
+          <mat-icon>favorite</mat-icon>
+        </div>
+        <h3 class="widget-title">Live Pulse</h3>
+      </div>
+      <div class="value-container">
+        <div class="value" [@pulseValue]="latestReading()?.client_id"
+             [ngClass]="{'hot': isNumber(latestBpm()) && asNumber(latestBpm()) > 100, 'normal': isNumber(latestBpm()) && asNumber(latestBpm()) <= 100 }">
+          {{ latestBpm() }}<span class="unit" *ngIf="latestBpm() !== '--'">bpm</span>
+        </div>
+      </div>
+      <div class="widget-footer">
+        <mat-icon>monitor_heart</mat-icon> <span>Heart rate monitor</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Gas Level Widget -->
+  <mat-card class="widget-card premium-shadow" matRipple>
+    <mat-card-content class="widget-content">
+      <div class="widget-header">
+        <div class="icon-wrapper gas-icon">
+          <mat-icon>air</mat-icon>
+        </div>
+        <h3 class="widget-title">Gas Level</h3>
+      </div>
+      <div class="value-container">
+        <div class="value" [@pulseValue]="latestReading()?.client_id"
+             [ngClass]="{'hot': isNumber(latestGaz()) && asNumber(latestGaz()) > 300, 'normal': isNumber(latestGaz()) && asNumber(latestGaz()) <= 300 }">
+          {{ latestGaz() }}
+        </div>
+      </div>
+      <div class="widget-footer">
+        <mat-icon>sensors</mat-icon> <span>Air quality sensor</span>
       </div>
     </mat-card-content>
   </mat-card>
