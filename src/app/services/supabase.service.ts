@@ -71,7 +71,11 @@ export class SupabaseService {
           this.isConnected.set(true);
         } else if (status === 'TIMED_OUT' || status === 'CLOSED' || status === 'CHANNEL_ERROR') {
           this.isConnected.set(false);
-          // Try to reconnect if dropped
+          
+          // 1. Remove the broken channel before creating a new one to prevent infinite loops
+          this.supabase.removeChannel(this.channel);
+
+          // 2. Try to reconnect if dropped
           setTimeout(() => {
             console.log('Attempting to reconnect Supabase channel...');
             this.subscribeToSensors();
