@@ -42,7 +42,7 @@ export class DashboardHomeComponent {
   private supabaseService = inject(SupabaseService);
 
   sensorData = this.supabaseService.sensorData;
-  displayedColumns: string[] = ['time', 'temperature', 'bpm', 'gaz', 'status'];
+  displayedColumns: string[] = ['client_id', 'time', 'temperature', 'bpm', 'gaz', 'status'];
 
   // Computed signals
   latestReading = computed(() => {
@@ -63,6 +63,11 @@ export class DashboardHomeComponent {
   latestGaz = computed(() => {
     const latest = this.latestReading();
     return latest ? latest.gaz_level : '--';
+  });
+
+  latestClientId = computed(() => {
+    const latest = this.latestReading();
+    return latest ? latest.client_id : '--';
   });
 
   latestStatus = computed(() => {

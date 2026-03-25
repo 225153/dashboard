@@ -1,4 +1,24 @@
 <div class="dashboard-grid" @staggeredCards>
+  <!-- Client ID Widget -->
+  <mat-card class="widget-card premium-shadow" matRipple>
+    <mat-card-content class="widget-content">
+      <div class="widget-header">
+        <div class="icon-wrapper client-icon">
+          <mat-icon>fingerprint</mat-icon>
+        </div>
+        <h3 class="widget-title">Patient ID</h3>
+      </div>
+      <div class="value-container">
+        <div class="value" [@pulseValue]="latestReading()?.client_id">
+          {{ latestClientId() }}
+        </div>
+      </div>
+      <div class="widget-footer">
+        <mat-icon>tag</mat-icon> <span>Current Active Client</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <!-- Temperature Widget -->
   <mat-card class="widget-card premium-shadow" matRipple>
     <mat-card-content class="widget-content">
@@ -98,6 +118,14 @@
     <div class="table-container">
       <table mat-table [dataSource]="sensorData()" class="history-table" [trackBy]="trackById">
         
+        <!-- Client ID Column -->
+        <ng-container matColumnDef="client_id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="client-badge">#{{ element.client_id }}</span>
+          </td>
+        </ng-container>
+
         <!-- Time Column -->
         <ng-container matColumnDef="time">
           <th mat-header-cell *matHeaderCellDef> Timestamp </th>

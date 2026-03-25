@@ -53,6 +53,11 @@
   color: #ff5722;
 }
 
+.client-icon {
+  background: rgba(3, 169, 244, 0.1);
+  color: #03a9f4;
+}
+
 .pulse-icon-widget {
   background: rgba(233, 30, 99, 0.1);
   color: #e91e63;
@@ -194,6 +199,16 @@ td.mat-cell {
 .date-txt {
   color: #94a3b8;
   font-size: 12px;
+}
+
+.client-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .temp-indicator {
