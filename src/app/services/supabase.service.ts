@@ -72,14 +72,20 @@ export class SupabaseService {
         } else if (status === 'TIMED_OUT' || status === 'CLOSED' || status === 'CHANNEL_ERROR') {
           this.isConnected.set(false);
           
-          // 1. Remove the broken channel before creating a new one to prevent infinite loops
-          this.supabase.removeChannel(this.channel);
+          if (this.channel) {
+            const oldChannel = this.channel;
+            // 1. Clear the reference first to prevent an infinite loop when removeChannel triggers a CLOSED event
+            this.channel = null as any; 
+            
+            // 2. Remove the broken channel
+            this.supabase.removeChannel(oldChannel);
 
-          // 2. Try to reconnect if dropped
-          setTimeout(() => {
-            console.log('Attempting to reconnect Supabase channel...');
-            this.subscribeToSensors();
-          }, 5000);
+            // 3. Try to reconnect if dropped
+            setTimeout(() => {
+              console.log('Attempting to reconnect Supabase channel...');
+              this.subscribeToSensors();
+            }, 5000);
+          }
         }
       });
   }
