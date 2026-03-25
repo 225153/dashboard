@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load .env file locally if it exists
+if (fs.existsSync('.env')) {
+  require('dotenv').config();
+}
+
 const dir = './src/environments';
 const file = 'environment.ts';
 const content = `export const environment = {
