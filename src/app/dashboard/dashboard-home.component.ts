@@ -42,8 +42,8 @@ export class DashboardHomeComponent {
   private supabaseService = inject(SupabaseService);
 
   sensorData = this.supabaseService.sensorData;
-  displayedColumns: string[] = ['time', 'temperature', 'status'];
-  
+  displayedColumns: string[] = ['time', 'temperature', 'bpm', 'gaz', 'status'];
+
   // Computed signals
   latestReading = computed(() => {
     const data = this.sensorData();
@@ -52,12 +52,12 @@ export class DashboardHomeComponent {
 
   latestTemperature = computed(() => {
     const latest = this.latestReading();
-    return latest ? latest.temperature : '--';
+    return latest ? latest.tmp : '--';
   });
 
   latestStatus = computed(() => {
     const latest = this.latestReading();
-    return latest ? latest.status : 'Unknown';
+    return latest ? latest.ai_status : 'Unknown';
   });
 
   isNumber(value: string | number): boolean {
@@ -69,6 +69,6 @@ export class DashboardHomeComponent {
   }
 
   trackById(index: number, item: any): number {
-    return item.id;
+    return item.client_id;
   }
 }

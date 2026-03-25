@@ -3,10 +3,15 @@ import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabas
 import { environment } from '../../environments/environment';
 
 export interface SensorData {
-  id: number;
-  temperature: number;
-  status: string;
-  created_at: string;
+  client_id: number;
+  timestamp: string;
+  tmp: number;
+  bpm: number;
+  sos: number;
+  ai_status: string;
+  ai_level: number;
+  decision_reason: string;
+  gaz_level: number;
 }
 
 @Injectable({
@@ -32,7 +37,7 @@ export class SupabaseService {
       const { data, error } = await this.supabase
         .from('sensor_data')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('timestamp', { ascending: false })
         .limit(10);
 
       if (error) {

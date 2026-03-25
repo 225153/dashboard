@@ -10,7 +10,7 @@
       </div>
       <div class="value-container">
         <!-- Pulse animation triggers continuously on new data id -->
-        <div class="value" [@pulseValue]="latestReading()?.id" 
+        <div class="value" [@pulseValue]="latestReading()?.client_id"
              [ngClass]="{'hot': isNumber(latestTemperature()) && asNumber(latestTemperature()) > 30, 'normal': isNumber(latestTemperature()) && asNumber(latestTemperature()) <= 30 }">
           {{ latestTemperature() }}<span class="unit" *ngIf="latestTemperature() !== '--'">°C</span>
         </div>
@@ -31,7 +31,7 @@
         <h3 class="widget-title">System Status</h3>
       </div>
       <div class="value-container">
-        <div class="value status-text" [@pulseValue]="latestReading()?.id" 
+        <div class="value status-text" [@pulseValue]="latestReading()?.client_id"
              [class.ok-text]="latestStatus() === 'OK'" [class.alert-text]="latestStatus() !== 'OK'">
           {{ latestStatus() }}
         </div>
@@ -60,29 +60,48 @@
         <ng-container matColumnDef="time">
           <th mat-header-cell *matHeaderCellDef> Timestamp </th>
           <td mat-cell *matCellDef="let element"> 
-            <span class="time-badge">{{ element.created_at | date:'HH:mm:ss' }}</span>
-            <span class="date-txt">{{ element.created_at | date:'MMM d' }}</span>
+            <span class="time-badge">{{ element.timestamp | date:'HH:mm:ss' }}</span>
+            <span class="date-txt">{{ element.timestamp | date:'MMM d' }}</span>
           </td>
         </ng-container>
 
         <!-- Temperature Column -->
         <ng-container matColumnDef="temperature">
           <th mat-header-cell *matHeaderCellDef> Temperature </th>
-          <td mat-cell *matCellDef="let element"> 
-            <div class="temp-indicator" [class.high]="element.temperature > 30">
-              <mat-icon *ngIf="element.temperature > 30">whatshot</mat-icon>
-              {{ element.temperature }}°C 
+          <td mat-cell *matCellDef="let element">
+            <div class="temp-indicator" [class.high]="element.tmp > 30">
+              <mat-icon *ngIf="element.tmp > 30">whatshot</mat-icon>
+              {{ element.tmp }}°C
             </div>
+          </td>
+        </ng-container>
+
+        <!-- BPM Column (New) -->
+        <ng-container matColumnDef="bpm">
+          <th mat-header-cell *matHeaderCellDef> Pulse </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.bpm }} bpm
+          </td>
+        </ng-container>
+
+        <!-- Gaz Column (New) -->
+        <ng-container matColumnDef="gaz">
+          <th mat-header-cell *matHeaderCellDef> Gas Level </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.gaz_level }}
           </td>
         </ng-container>
 
         <!-- Status Column -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef> Status </th>
-          <td mat-cell *matCellDef="let element"> 
-            <span class="status-chip" [class.success]="element.status === 'OK'" [class.error]="element.status !== 'OK'">
-               {{ element.status }}
+          <th mat-header-cell *matHeaderCellDef> AI Status </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="status-chip" [class.success]="element.ai_status === 'Normal'" [class.error]="element.ai_status !== 'Normal'">
+               {{ element.ai_status || 'Unknown' }}
             </span>
+            <div *ngIf="element.decision_reason" style="font-size: 0.75em; color: gray;">
+              {{ element.decision_reason }}
+            </div>
           </td>
         </ng-container>
 
