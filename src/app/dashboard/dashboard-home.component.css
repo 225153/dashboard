@@ -88,11 +88,18 @@
 }
 
 .value {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   letter-spacing: -0.05em;
   color: #1e293b;
   display: inline-block;
+  line-height: 1.1;
+}
+
+.value.status-text {
+  font-size: 2rem;
+  word-break: break-word;
+  padding: 8px 0;
 }
 
 .value .unit {
