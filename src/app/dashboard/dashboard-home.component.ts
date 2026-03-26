@@ -83,11 +83,29 @@ export class DashboardHomeComponent {
     return value as number;
   }
 
-  formatDate(timestamp: string | null | undefined): Date | null {
+  formatDate(timestamp: string | null | undefined): Date | string | null {
     if (!timestamp) return null;
-    // Ensure the timestamp has the 'Z' indicating UTC to avoid parsing errors
-    const safeTimestamp = timestamp.endsWith('Z') ? timestamp : timestamp + 'Z';
-    return new Date(safeTimestamp);
+    
+    try {
+      // Check if the timestamp is just a time string (e.g., "20:04:18")
+      if (/^\d{2}:\d{2}:\d{2}$/.test(timestamp)) {
+        const today = new Date().toISOString().split('T')[0];
+        return new Date(`${today}T${timestamp}Z`);
+      }
+
+      // Replace any space with 'T' to ensure standard ISO 8601 format
+      let safeTimestamp = timestamp.replace(' ', 'T');
+      
+      // Ensure the timestamp has the 'Z' indicating UTC to avoid parsing errors
+      if (!safeTimestamp.endsWith('Z') && !/\+[0-9]{2}:[0-9]{2}$/.test(safeTimestamp)) {
+        safeTimestamp += 'Z';
+      }
+      
+      const parsedDate = new Date(safeTimestamp);
+      return isNaN(parsedDate.getTime()) ? timestamp : parsedDate;
+    } catch {
+      return timestamp;
+    }
   }
 
   trackById(index: number, item: any): number {
