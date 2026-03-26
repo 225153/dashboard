@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, NgZone, inject } from '@angular/core';
 import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
@@ -24,6 +24,7 @@ export class SupabaseService {
   // Signals
   public sensorData = signal<SensorData[]>([]);
   public isConnected = signal<boolean>(false);
+  private ngZone = inject(NgZone);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -62,17 +63,20 @@ export class SupabaseService {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'sensor_data' },
         (payload) => {
-          const newRecord = payload.new as SensorData;
-          this.sensorData.update((data) => {
-            const updated = [newRecord, ...data];
-            // Keep only latest 10
-            return updated.slice(0, 10);
+          this.ngZone.run(() => {
+            const newRecord = payload.new as SensorData;
+            this.sensorData.update((data) => {
+              const updated = [newRecord, ...data];
+              // Keep only latest 10
+              return updated.slice(0, 10);
+            });
           });
         }
       )
       .subscribe((status) => {
-        console.log('Supabase Channel Status:', status); // <-- Added log here
-        if (status === 'SUBSCRIBED') {
+        this.ngZone.run(() => {
+          console.log('Supabase Channel Status:', status); // <-- Added log here  
+          if (status === 'SUBSCRIBED') {
           this.isConnected.set(true);
         } else if (status === 'TIMED_OUT' || status === 'CLOSED' || status === 'CHANNEL_ERROR') {
           this.isConnected.set(false);
@@ -85,14 +89,16 @@ export class SupabaseService {
             // 2. Remove the broken channel
             this.supabase.removeChannel(oldChannel);
 
-            // 3. Try to reconnect if dropped
             setTimeout(() => {
-              console.log('Attempting to reconnect Supabase channel...');
-              this.subscribeToSensors();
+              this.ngZone.run(() => {
+                console.log('Attempting to reconnect Supabase channel...');       
+                this.subscribeToSensors();
+              });
             }, 5000);
           }
         }
       });
+    });
   }
 
   public unsubscribe() {
