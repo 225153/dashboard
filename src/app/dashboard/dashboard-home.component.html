@@ -130,8 +130,8 @@
         <ng-container matColumnDef="time">
           <th mat-header-cell *matHeaderCellDef> Timestamp </th>
           <td mat-cell *matCellDef="let element"> 
-            <span class="time-badge">{{ element.timestamp + 'Z' | date:'HH:mm:ss' }}</span>
-            <span class="date-txt">{{ element.timestamp + 'Z' | date:'MMM d' }}</span>
+            <span class="time-badge">{{ formatDate(element.timestamp) | date:'HH:mm:ss' }}</span>
+            <span class="date-txt">{{ formatDate(element.timestamp) | date:'MMM d' }}</span>
           </td>
         </ng-container>
 

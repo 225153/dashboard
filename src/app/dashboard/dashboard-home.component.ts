@@ -83,6 +83,13 @@ export class DashboardHomeComponent {
     return value as number;
   }
 
+  formatDate(timestamp: string | null | undefined): Date | null {
+    if (!timestamp) return null;
+    // Ensure the timestamp has the 'Z' indicating UTC to avoid parsing errors
+    const safeTimestamp = timestamp.endsWith('Z') ? timestamp : timestamp + 'Z';
+    return new Date(safeTimestamp);
+  }
+
   trackById(index: number, item: any): number {
     return item.client_id;
   }
